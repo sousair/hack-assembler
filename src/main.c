@@ -1,11 +1,11 @@
-#include <utils/bool.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
+#include "../utils/bool.h"
+
 #define HACK_ASSEMBLY_EXTENSION ".asm"
 #define HACK_ASSEMBLY_EXTENSION_SIZE 4
-#define MAX_CHARACTERS_PER_LINE 512
 
 int main(int argc, char *argv[])
 {
@@ -17,7 +17,6 @@ int main(int argc, char *argv[])
 
 boolean check_file_extension(int arg_count, char *arg_values[])
 {
-  if (arg_count != 2)
   {
     return false;
   }
