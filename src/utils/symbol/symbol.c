@@ -54,7 +54,7 @@ SYMBOL *contains(char *name, SYMBOL hash_table[SYMBOL_HASH_TABLE_MAX_SIZE])
 
   SYMBOL *symbol = &hash_table[index];
 
-  while (symbol != NULL)
+  while (symbol != NULL && symbol->name != NULL)
   {
     if (strcmp(symbol->name, name) == 0)
     {
