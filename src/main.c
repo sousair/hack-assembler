@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
     return 1;
   }
 
-  SYMBOL hash_table[SYMBOL_HASH_TABLE_MAX_SIZE];
+  SYMBOL hash_table[SYMBOL_HASH_TABLE_MAX_SIZE] = { NULL };
 
   add_default_symbols(hash_table);
   return 0;
