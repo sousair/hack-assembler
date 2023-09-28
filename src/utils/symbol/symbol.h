@@ -1,6 +1,6 @@
 #include <stdint.h>
 
-#define SYMBOL_HASH_TABLE_MAX_SIZE 300
+#define SYMBOL_HASH_TABLE_MAX_SIZE 50
 
 typedef struct SYMBOL_T
 {
