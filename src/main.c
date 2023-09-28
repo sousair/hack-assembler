@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <ctype.h>
 
 #include <symbol.h>
 #include <bool.h>
@@ -11,6 +12,8 @@
 boolean check_file_extension(int arg_count, char *arg_values[]);
 void increment_symbol_address(int *address);
 void add_default_symbols(SYMBOL hash_table[SYMBOL_HASH_TABLE_MAX_SIZE]);
+void read_label_symbols(FILE *assembly_file, SYMBOL hash_table[SYMBOL_HASH_TABLE_MAX_SIZE]);
+char *remove_whitespaces(char line[]);
 
 int main(int argc, char *argv[])
 {
@@ -19,10 +22,77 @@ int main(int argc, char *argv[])
     return 1;
   }
 
-  SYMBOL hash_table[SYMBOL_HASH_TABLE_MAX_SIZE] = { NULL };
+  FILE *assembly_file = fopen(argv[1], "r");
+
+  if (assembly_file == NULL)
+  {
+    fprintf(stderr, "[Error] Could not open file %s\n", argv[1]);
+    return 1;
+  }
+
+  SYMBOL hash_table[SYMBOL_HASH_TABLE_MAX_SIZE] = {NULL};
 
   add_default_symbols(hash_table);
+
+  read_label_symbols(assembly_file, hash_table);
+
   return 0;
+}
+
+void read_label_symbols(FILE *assembly_file, SYMBOL hash_table[SYMBOL_HASH_TABLE_MAX_SIZE])
+{
+  int lines_count = 0;
+  char line[256];
+
+  while (fgets(line, sizeof(line), assembly_file))
+  {
+    char *clean_line = remove_whitespaces(line);
+    char start_c = clean_line[0];
+
+    if (start_c == '/' || start_c == '\n')
+    {
+      continue;
+    }
+
+    if (start_c == '(')
+    {
+      char *label_symbol = strtok(clean_line, "()");
+
+      if (isdigit(label_symbol[0]))
+      {
+        fprintf(stderr, "[Error] Symbol %s should start with a letter\n", label_symbol);
+        return;
+      }
+
+      if (contains(label_symbol, hash_table) != NULL)
+      {
+        fprintf(stderr, "[Error] Symbol %s already exists\n", label_symbol);
+        return;
+      }
+
+      add_symbol(label_symbol, lines_count + 1, hash_table);
+    }
+    lines_count++;
+  }
+}
+
+char *remove_whitespaces(char line[])
+{
+  int i = 0;
+  int copy_i = 0;
+
+  while (line[i])
+  {
+    if (!isblank(line[i]))
+    {
+      line[copy_i++] = line[i];
+    }
+    i++;
+  }
+
+  line[copy_i] = '\0';
+
+  return strdup(line);
 }
 
 boolean check_file_extension(int arg_count, char *arg_values[])
@@ -87,5 +157,4 @@ void add_default_symbols(SYMBOL hash_table[SYMBOL_HASH_TABLE_MAX_SIZE])
   add_symbol("THAT", 4, hash_table);
   add_symbol("SCREEN", 16384, hash_table);
   add_symbol("KBD", 24576, hash_table);
-  add_symbol("LOOP", 4, hash_table);
 }
