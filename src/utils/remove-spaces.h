@@ -1,0 +1,1 @@
+char *remove_spaces(char line[]);
