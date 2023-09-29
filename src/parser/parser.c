@@ -48,7 +48,6 @@ void parse(FILE *assembly_file, SYMBOL hash_table[SYMBOL_HASH_TABLE_MAX_SIZE], F
     case C_INST:
     {
       binary_to_write = handle_c_instruction(clean_line);
-      // printf("%s\n", binary_to_write);
       break;
     }
     }
@@ -82,13 +81,14 @@ char *handle_c_instruction(char *line)
 
   int line_len = strlen(line);
 
-  char *actual_v = dest_values;
+  char *actual_v = comp_values;
 
   for (int i = 0; i < line_len; i++)
   {
     if (line[i] == '=')
     {
-      actual_v = comp_values;
+      strncpy(dest_values, comp_values, i);
+      comp_values[0] = '\0';
       continue;
     }
 
