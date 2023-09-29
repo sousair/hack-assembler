@@ -15,7 +15,7 @@ INC_DIRS = -I$(UTILS_DIR) -I$(UTILS_DIR)/symbol -I$(SRC_DIR)/parser
 all: hack_assembler
 
 hack_assembler: $(OBJ_FILES)
-	$(CC) $(CFLAGS) $^ -o $(BIN_DIR)/main
+	$(CC) $(CFLAGS) $^ -o $(BIN_DIR)/hack_assembler
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(@D)
