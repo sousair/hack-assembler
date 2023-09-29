@@ -39,9 +39,13 @@ int main(int argc, char *argv[])
 
   rewind(assembly_file);
 
-  char *out_f_name = malloc(sizeof(char) * (strlen(argv[1]) - HACK_ASSEMBLY_EXTENSION_SIZE + 1));
+  char *dot_position = strrchr(argv[1], '.');
 
-  sprintf(out_f_name, "%s.hack", strtok(argv[1], "."));
+  size_t file_name_length = dot_position - argv[1];
+  char *out_f_name = malloc(file_name_length + strlen(".hack") + 1);
+  memcpy(out_f_name, argv[1], file_name_length);
+  out_f_name[file_name_length] = '\0';
+  strcat(out_f_name, ".hack");
 
   FILE *hack_file = fopen(out_f_name, "wb");
 
