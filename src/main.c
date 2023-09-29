@@ -73,7 +73,7 @@ void read_label_symbols(FILE *assembly_file, SYMBOL hash_table[SYMBOL_HASH_TABLE
     char *clean_line = remove_spaces(line);
     char start_c = clean_line[0];
 
-    if (start_c == '/' || start_c == '\n')
+    if (start_c == '/' || start_c == '\n' || start_c == '\0')
     {
       continue;
     }
@@ -94,7 +94,8 @@ void read_label_symbols(FILE *assembly_file, SYMBOL hash_table[SYMBOL_HASH_TABLE
         return;
       }
 
-      add_symbol(label_symbol, lines_count + 1, hash_table);
+      add_symbol(label_symbol, lines_count, hash_table);
+      continue;
     }
     lines_count++;
   }

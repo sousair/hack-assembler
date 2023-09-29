@@ -45,7 +45,6 @@ void parse(FILE *assembly_file, SYMBOL hash_table[SYMBOL_HASH_TABLE_MAX_SIZE], F
 
     case L_INST:
     {
-      // free(binary_to_write);
       continue;
     }
 
