@@ -13,7 +13,7 @@ To assemble your Hack Assembly code, follow these steps:
 
 2. Run the assembler on your input Hack Assembly code file (e.g., input.asm):
    ```bash
-   $ ./bin/main input.asm
+   $ ./bin/hack_assembler input.asm
    ```
 
 ## Additional Resources
