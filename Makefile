@@ -7,10 +7,10 @@ OBJ_DIR = ./obj
 
 UTILS_DIR = $(SRC_DIR)/utils
 
-SRC_FILES = $(wildcard $(SRC_DIR)/*.c) $(wildcard $(UTILS_DIR)/symbol/*.c)
+SRC_FILES = $(wildcard $(SRC_DIR)/*.c) $(wildcard $(UTILS_DIR)/*.c) $(wildcard $(UTILS_DIR)/symbol/*.c) $(wildcard $(SRC_DIR)/parser/*.c)
 OBJ_FILES = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRC_FILES))
 
-INC_DIRS = -I$(UTILS_DIR) -I$(UTILS_DIR)/symbol
+INC_DIRS = -I$(UTILS_DIR) -I$(UTILS_DIR)/symbol -I$(SRC_DIR)/parser
 
 all: hack_assembler
 
