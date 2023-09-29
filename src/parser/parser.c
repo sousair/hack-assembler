@@ -25,7 +25,7 @@ void parse(FILE *assembly_file, SYMBOL hash_table[SYMBOL_HASH_TABLE_MAX_SIZE], F
   while (fgets(line, sizeof(line), assembly_file))
   {
     char *clean_line = remove_spaces(line);
-    if (clean_line[0] == '/' || clean_line[0] == '\n')
+    if (clean_line[0] == '/' || clean_line[0] == '\n' || clean_line[0] == '\0')
     {
       continue;
     }
@@ -45,6 +45,7 @@ void parse(FILE *assembly_file, SYMBOL hash_table[SYMBOL_HASH_TABLE_MAX_SIZE], F
 
     case L_INST:
     {
+      // free(binary_to_write);
       continue;
     }
 
@@ -91,6 +92,10 @@ char *handle_c_instruction(char *line)
 
   for (int i = 0; i < line_len; i++)
   {
+    if (line[i] == '/')
+    {
+      break;
+    }
     if (line[i] == '=')
     {
       strncpy(dest_values, comp_values, i);
