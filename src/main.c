@@ -4,7 +4,9 @@
 #include <ctype.h>
 
 #include <symbol.h>
+#include <parser.h>
 #include <bool.h>
+#include <remove-spaces.h>
 
 #define HACK_ASSEMBLY_EXTENSION ".asm"
 #define HACK_ASSEMBLY_EXTENSION_SIZE 4
@@ -13,7 +15,6 @@ boolean check_file_extension(int arg_count, char *arg_values[]);
 void increment_symbol_address(int *address);
 void add_default_symbols(SYMBOL hash_table[SYMBOL_HASH_TABLE_MAX_SIZE]);
 void read_label_symbols(FILE *assembly_file, SYMBOL hash_table[SYMBOL_HASH_TABLE_MAX_SIZE]);
-char *remove_whitespaces(char line[]);
 
 int main(int argc, char *argv[])
 {
@@ -36,6 +37,25 @@ int main(int argc, char *argv[])
 
   read_label_symbols(assembly_file, hash_table);
 
+  rewind(assembly_file);
+
+  char *out_f_name = malloc(sizeof(char) * (strlen(argv[1]) - HACK_ASSEMBLY_EXTENSION_SIZE + 1));
+
+  sprintf(out_f_name, "%s.hack", strtok(argv[1], "."));
+
+  FILE *hack_file = fopen(out_f_name, "wb");
+
+  if (hack_file == NULL)
+  {
+    fprintf(stderr, "[Error] Could not create file %s\n", out_f_name);
+    return 1;
+  }
+
+  parse(assembly_file, hash_table, hack_file);
+
+  free(out_f_name);
+  fclose(assembly_file);
+  fclose(hack_file);
   return 0;
 }
 
@@ -46,7 +66,7 @@ void read_label_symbols(FILE *assembly_file, SYMBOL hash_table[SYMBOL_HASH_TABLE
 
   while (fgets(line, sizeof(line), assembly_file))
   {
-    char *clean_line = remove_whitespaces(line);
+    char *clean_line = remove_spaces(line);
     char start_c = clean_line[0];
 
     if (start_c == '/' || start_c == '\n')
@@ -74,25 +94,6 @@ void read_label_symbols(FILE *assembly_file, SYMBOL hash_table[SYMBOL_HASH_TABLE
     }
     lines_count++;
   }
-}
-
-char *remove_whitespaces(char line[])
-{
-  int i = 0;
-  int copy_i = 0;
-
-  while (line[i])
-  {
-    if (!isblank(line[i]))
-    {
-      line[copy_i++] = line[i];
-    }
-    i++;
-  }
-
-  line[copy_i] = '\0';
-
-  return strdup(line);
 }
 
 boolean check_file_extension(int arg_count, char *arg_values[])
