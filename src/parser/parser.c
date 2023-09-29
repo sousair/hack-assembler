@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <stdbool.h>
 
-#include <bool.h>
 #include <symbol.h>
 #include <remove-spaces.h>
 #include <parser.h>
@@ -14,7 +14,7 @@ char *handle_l_instruction(char *var, SYMBOL hash_table[SYMBOL_HASH_TABLE_MAX_SI
 char *handle_a_instruction(char *var, int *address_count, SYMBOL hash_table[SYMBOL_HASH_TABLE_MAX_SIZE]);
 void get_comp(char comp_values[3], char comp[7]);
 instruction get_instruction(char first_c);
-boolean is_number(const char *str);
+bool is_number(const char *str);
 
 void parse(FILE *assembly_file, SYMBOL hash_table[SYMBOL_HASH_TABLE_MAX_SIZE], FILE *hack_file)
 {
@@ -333,7 +333,7 @@ instruction get_instruction(char first_c)
   }
 }
 
-boolean is_number(const char *str)
+bool is_number(const char *str)
 {
   char *endptr;
   strtod(str, &endptr);

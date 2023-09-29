@@ -2,16 +2,16 @@
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <stdbool.h>
 
 #include <symbol.h>
 #include <parser.h>
-#include <bool.h>
 #include <remove-spaces.h>
 
 #define HACK_ASSEMBLY_EXTENSION ".asm"
 #define HACK_ASSEMBLY_EXTENSION_SIZE 4
 
-boolean check_file_extension(int arg_count, char *arg_values[]);
+bool check_file_extension(int arg_count, char *arg_values[]);
 void increment_symbol_address(int *address);
 void add_default_symbols(SYMBOL hash_table[SYMBOL_HASH_TABLE_MAX_SIZE]);
 void read_label_symbols(FILE *assembly_file, SYMBOL hash_table[SYMBOL_HASH_TABLE_MAX_SIZE]);
@@ -96,7 +96,7 @@ void read_label_symbols(FILE *assembly_file, SYMBOL hash_table[SYMBOL_HASH_TABLE
   }
 }
 
-boolean check_file_extension(int arg_count, char *arg_values[])
+bool check_file_extension(int arg_count, char *arg_values[])
 {
   if (arg_count != 2)
   {
