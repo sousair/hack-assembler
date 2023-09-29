@@ -44,7 +44,6 @@ SYMBOL *add_symbol(char *name, __uint16_t address, SYMBOL hash_table[SYMBOL_HASH
   SYMBOL *n_symbol = new_symbol(name, address);
   
   e_symbol->next = n_symbol;
-  n_symbol->prev = e_symbol;
   return n_symbol;
 }
 
