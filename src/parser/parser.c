@@ -9,6 +9,7 @@
 #include <parser.h>
 
 char *parse_to_binary(int decimal);
+void write_to_file(FILE *hack_file, char *binary_to_write);
 char *handle_c_instruction(char *line);
 char *handle_l_instruction(char *var, SYMBOL hash_table[SYMBOL_HASH_TABLE_MAX_SIZE]);
 char *handle_a_instruction(char *var, int *address_count, SYMBOL hash_table[SYMBOL_HASH_TABLE_MAX_SIZE]);
@@ -37,6 +38,8 @@ void parse(FILE *assembly_file, SYMBOL hash_table[SYMBOL_HASH_TABLE_MAX_SIZE], F
     {
       char *var = strtok(clean_line, "@");
       binary_to_write = handle_a_instruction(var, &address_c, hash_table);
+      write_to_file(hack_file, binary_to_write);
+      free(binary_to_write);
       break;
     }
 
@@ -48,21 +51,24 @@ void parse(FILE *assembly_file, SYMBOL hash_table[SYMBOL_HASH_TABLE_MAX_SIZE], F
     case C_INST:
     {
       binary_to_write = handle_c_instruction(clean_line);
+      write_to_file(hack_file, binary_to_write);
+      free(binary_to_write);
       break;
     }
     }
-
-    fwrite(binary_to_write, sizeof(char), BINARY_SIZE, hack_file);
-    fputc('\n', hack_file);
   }
-  free(binary_to_write);
+}
+
+void write_to_file(FILE *hack_file, char *binary_to_write)
+{
+  fwrite(binary_to_write, sizeof(char), BINARY_SIZE, hack_file);
+  fputc('\n', hack_file);
 }
 
 char *parse_to_binary(int decimal)
 {
-  char binary[BINARY_SIZE] = "0000000000000000";
-  binary[BINARY_SIZE] = '\0';
-
+  char binary[BINARY_SIZE + 1] = "0000000000000000\0";
+  
   int index = BINARY_SIZE - 1;
   while (decimal > 0)
   {
