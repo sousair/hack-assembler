@@ -12,7 +12,7 @@
 #define HACK_ASSEMBLY_EXTENSION_SIZE 4
 
 bool check_file_extension(int arg_count, char *arg_values[]);
-void increment_symbol_address(int *address);
+
 void add_default_symbols(SYMBOL hash_table[SYMBOL_HASH_TABLE_MAX_SIZE]);
 void read_label_symbols(FILE *assembly_file, SYMBOL hash_table[SYMBOL_HASH_TABLE_MAX_SIZE]);
 
@@ -42,22 +42,25 @@ int main(int argc, char *argv[])
   char *dot_position = strrchr(argv[1], '.');
 
   size_t file_name_length = dot_position - argv[1];
-  char *out_f_name = malloc(file_name_length + strlen(".hack") + 1);
-  memcpy(out_f_name, argv[1], file_name_length);
-  out_f_name[file_name_length] = '\0';
-  strcat(out_f_name, ".hack");
 
-  FILE *hack_file = fopen(out_f_name, "wb");
+  char *output_file_name = malloc(file_name_length + strlen(".hack") + 1);
+  
+  memcpy(output_file_name, argv[1], file_name_length);
+  output_file_name[file_name_length] = '\0';
+  
+  strcat(output_file_name, ".hack");
+
+  FILE *hack_file = fopen(output_file_name, "wb");
 
   if (hack_file == NULL)
   {
-    fprintf(stderr, "[Error] Could not create file %s\n", out_f_name);
+    fprintf(stderr, "[Error] Could not create file %s\n", output_file_name);
     return 1;
   }
 
   parse(assembly_file, hash_table, hack_file);
 
-  free(out_f_name);
+  free(output_file_name);
   fclose(assembly_file);
   fclose(hack_file);
   return 0;
@@ -71,14 +74,14 @@ void read_label_symbols(FILE *assembly_file, SYMBOL hash_table[SYMBOL_HASH_TABLE
   while (fgets(line, sizeof(line), assembly_file))
   {
     char *clean_line = remove_spaces(line);
-    char start_c = clean_line[0];
+    char first_character = clean_line[0];
 
-    if (start_c == '/' || start_c == '\n' || start_c == '\0')
+    if (first_character == '/' || first_character == '\n' || first_character == '\0')
     {
       continue;
     }
 
-    if (start_c == '(')
+    if (first_character == '(')
     {
       char *label_symbol = strtok(clean_line, "()");
 
@@ -118,24 +121,6 @@ bool check_file_extension(int arg_count, char *arg_values[])
   }
 
   return true;
-}
-
-void increment_symbol_address(int *address)
-{
-  int reserved_addresses[2] = {16384, 24576};
-
-  (*address)++;
-
-  if (*address == reserved_addresses[0] || *address == reserved_addresses[1])
-  {
-    (*address)++;
-  }
-
-  if (*address > 0x7FFF)
-  {
-    fprintf(stderr, "[Error] Max address exceeded\n");
-    *address = -1;
-  }
 }
 
 void add_default_symbols(SYMBOL hash_table[SYMBOL_HASH_TABLE_MAX_SIZE])

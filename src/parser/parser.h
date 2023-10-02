@@ -2,6 +2,9 @@
 #include <symbol.h>
 
 #define BINARY_SIZE 16
+#define SCREEN_MEMORY_ADDRESS_START 0x4000
+#define KEYBOARD_MEMORY_ADDRESS 0x6000
+#define LAST_HACK_MEMORY_ADDRESS 0x7FFF
 
 enum Instructions
 {
