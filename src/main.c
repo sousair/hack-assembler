@@ -59,6 +59,7 @@ int main(int argc, char *argv[])
   }
 
   parse(assembly_file, hash_table, hack_file);
+  free_symbol_table(hash_table);
   free(output_file_name);
   fclose(assembly_file);
   fclose(hack_file);

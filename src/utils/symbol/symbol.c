@@ -74,3 +74,17 @@ __uint16_t get_address(char *name, SYMBOL *hash_table[SYMBOL_HASH_TABLE_MAX_SIZE
   }
   return symbol->address;
 }
+
+void free_symbol_table(SYMBOL *hash_table[SYMBOL_HASH_TABLE_MAX_SIZE])
+{
+  for (int i = 0; i < SYMBOL_HASH_TABLE_MAX_SIZE; i++)
+  {
+    SYMBOL *symbol = hash_table[i];
+    while (symbol != NULL)
+    {
+      SYMBOL *next = symbol->next;
+      free(symbol);
+      symbol = next;
+    }
+  }
+}
