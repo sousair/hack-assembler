@@ -13,7 +13,7 @@ void write_to_file(FILE *hack_file, char *binary_to_write);
 instruction get_instruction(char first_c);
 void increment_symbol_address(int *address);
 
-char *handle_a_instruction(char *var, int *address_count, SYMBOL hash_table[SYMBOL_HASH_TABLE_MAX_SIZE]);
+char *handle_a_instruction(char *var, int *address_count, SYMBOL *hash_table[SYMBOL_HASH_TABLE_MAX_SIZE]);
 
 char *handle_c_instruction(char *line);
 char *get_c_dest(char *dest_values);
@@ -25,7 +25,7 @@ char *handle_three_char_comp(char first_comp_char, char second_comp_char, char l
 
 bool is_number(const char *str);
 
-void parse(FILE *assembly_file, SYMBOL hash_table[SYMBOL_HASH_TABLE_MAX_SIZE], FILE *hack_file)
+void parse(FILE *assembly_file, SYMBOL *hash_table[SYMBOL_HASH_TABLE_MAX_SIZE], FILE *hack_file)
 {
   char line[256];
   int address_c = 16;
@@ -130,7 +130,7 @@ char *parse_to_binary(int decimal)
   return strdup(binary);
 }
 
-char *handle_a_instruction(char *var, int *address_count, SYMBOL hash_table[SYMBOL_HASH_TABLE_MAX_SIZE])
+char *handle_a_instruction(char *var, int *address_count, SYMBOL *hash_table[SYMBOL_HASH_TABLE_MAX_SIZE])
 {
   if (is_number(var))
   {

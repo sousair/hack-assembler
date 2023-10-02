@@ -13,8 +13,8 @@
 
 bool check_file_extension(int arg_count, char *arg_values[]);
 
-void add_default_symbols(SYMBOL hash_table[SYMBOL_HASH_TABLE_MAX_SIZE]);
-void read_label_symbols(FILE *assembly_file, SYMBOL hash_table[SYMBOL_HASH_TABLE_MAX_SIZE]);
+void add_default_symbols(SYMBOL *hash_table[SYMBOL_HASH_TABLE_MAX_SIZE]);
+void read_label_symbols(FILE *assembly_file, SYMBOL *hash_table[SYMBOL_HASH_TABLE_MAX_SIZE]);
 
 int main(int argc, char *argv[])
 {
@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
     return 1;
   }
 
-  SYMBOL hash_table[SYMBOL_HASH_TABLE_MAX_SIZE] = {NULL};
+  SYMBOL *hash_table[SYMBOL_HASH_TABLE_MAX_SIZE] = {NULL};
 
   add_default_symbols(hash_table);
 
@@ -59,14 +59,13 @@ int main(int argc, char *argv[])
   }
 
   parse(assembly_file, hash_table, hack_file);
-
   free(output_file_name);
   fclose(assembly_file);
   fclose(hack_file);
   return 0;
 }
 
-void read_label_symbols(FILE *assembly_file, SYMBOL hash_table[SYMBOL_HASH_TABLE_MAX_SIZE])
+void read_label_symbols(FILE *assembly_file, SYMBOL *hash_table[SYMBOL_HASH_TABLE_MAX_SIZE])
 {
   int lines_count = 0;
   char line[256];
@@ -123,7 +122,7 @@ bool check_file_extension(int arg_count, char *arg_values[])
   return true;
 }
 
-void add_default_symbols(SYMBOL hash_table[SYMBOL_HASH_TABLE_MAX_SIZE])
+void add_default_symbols(SYMBOL *hash_table[SYMBOL_HASH_TABLE_MAX_SIZE])
 {
   add_symbol("R0", 0, hash_table);
   add_symbol("R1", 1, hash_table);

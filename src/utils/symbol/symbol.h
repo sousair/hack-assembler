@@ -11,8 +11,8 @@ typedef struct SYMBOL_T
   struct SYMBOL_T *next;
 } SYMBOL;
 
-SYMBOL *add_symbol(char *name, __uint16_t address, SYMBOL hash_table[SYMBOL_HASH_TABLE_MAX_SIZE]);
-SYMBOL *contains(char *name, SYMBOL hash_table[SYMBOL_HASH_TABLE_MAX_SIZE]);
-__uint16_t get_address(char *name, SYMBOL hash_table[SYMBOL_HASH_TABLE_MAX_SIZE]);
+SYMBOL *add_symbol(char *name, __uint16_t address, SYMBOL *hash_table[SYMBOL_HASH_TABLE_MAX_SIZE]);
+SYMBOL *contains(char *name, SYMBOL *hash_table[SYMBOL_HASH_TABLE_MAX_SIZE]);
+__uint16_t get_address(char *name, SYMBOL *hash_table[SYMBOL_HASH_TABLE_MAX_SIZE]);
 
 #endif

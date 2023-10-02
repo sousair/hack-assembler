@@ -15,4 +15,4 @@ enum Instructions
 
 #define instruction enum Instructions
 
-void parse(FILE *assembly_file, SYMBOL hash_table[SYMBOL_HASH_TABLE_MAX_SIZE], FILE *hack_file);
+void parse(FILE *assembly_file, SYMBOL *hash_table[SYMBOL_HASH_TABLE_MAX_SIZE], FILE *hack_file);

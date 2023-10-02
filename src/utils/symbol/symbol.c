@@ -20,19 +20,20 @@ SYMBOL *new_symbol(char *name, __uint16_t address)
   SYMBOL *symbol = malloc(sizeof(SYMBOL));
   symbol->name = name;
   symbol->address = address;
+  symbol->next = NULL;
   return symbol;
 }
 
-SYMBOL *add_symbol(char *name, __uint16_t address, SYMBOL hash_table[SYMBOL_HASH_TABLE_MAX_SIZE])
+SYMBOL *add_symbol(char *name, __uint16_t address, SYMBOL *hash_table[SYMBOL_HASH_TABLE_MAX_SIZE])
 {
   int index = hash_name(name);
 
-  SYMBOL *e_symbol = &hash_table[index];
+  SYMBOL *e_symbol = hash_table[index];
 
-  if (e_symbol == NULL || e_symbol->name == NULL)
+  if (e_symbol == NULL)
   {
     SYMBOL *symbol = new_symbol(name, address);
-    hash_table[index] = *symbol;
+    hash_table[index] = symbol;
     return symbol;
   }
 
@@ -47,13 +48,13 @@ SYMBOL *add_symbol(char *name, __uint16_t address, SYMBOL hash_table[SYMBOL_HASH
   return n_symbol;
 }
 
-SYMBOL *contains(char *name, SYMBOL hash_table[SYMBOL_HASH_TABLE_MAX_SIZE])
+SYMBOL *contains(char *name, SYMBOL *hash_table[SYMBOL_HASH_TABLE_MAX_SIZE])
 {
   int index = hash_name(name);
 
-  SYMBOL *symbol = &hash_table[index];
+  SYMBOL *symbol = hash_table[index];
 
-  while (symbol != NULL && symbol->name != NULL)
+  while (symbol != NULL)
   {
     if (strcmp(symbol->name, name) == 0)
     {
@@ -64,7 +65,7 @@ SYMBOL *contains(char *name, SYMBOL hash_table[SYMBOL_HASH_TABLE_MAX_SIZE])
 
   return NULL;
 }
-__uint16_t get_address(char *name, SYMBOL hash_table[SYMBOL_HASH_TABLE_MAX_SIZE])
+__uint16_t get_address(char *name, SYMBOL *hash_table[SYMBOL_HASH_TABLE_MAX_SIZE])
 {
   SYMBOL *symbol = contains(name, hash_table);
   if (symbol == NULL)
